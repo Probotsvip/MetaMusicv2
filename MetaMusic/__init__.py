@@ -15,9 +15,10 @@ app = Meta()
 userbot = Userbot()
 
 
-from .platforms import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, MusicAPI
+from .platforms import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, MusicAPI, Carbon
 
 Apple = Apple()
+Carbon = Carbon()
 Resso = Resso()
 SoundCloud = SoundCloud()
 Spotify = Spotify()
