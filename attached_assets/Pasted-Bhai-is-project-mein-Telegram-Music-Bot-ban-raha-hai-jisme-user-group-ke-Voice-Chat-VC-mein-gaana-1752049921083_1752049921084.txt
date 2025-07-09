@@ -1,0 +1,104 @@
+Bhai, is project mein Telegram Music Bot ban raha hai jisme user group ke Voice Chat (VC) mein gaana sunta hai. Logic already kaafi kuch implemented hai — lekin ab ek important upgrade chahiye.
+
+
+
+
+---
+
+✅ Mera Actual Requirement:
+
+1. Mere paas ek khud ka Music API system hai
+
+Wo har song ke liye ek 320kbps original stream_url deta hai
+
+Wo URL bina download ke, directly play ho sakta hai — YouTube/VLC/Spotify jaise
+
+Example: "stream_url": "https://koyeb.app/proxy/stream/xyz" (MP3 Direct)
+
+
+
+2. Mujhe chahiye ki:
+
+Jab koi user koi song play kare,
+
+To system kisi external site se download ya convert na kare (jaise yt-dlp, cookies, Telegram file, etc.)
+
+Bas mera API ka stream_url use ho
+
+Aur usko Telegram ke Voice Chat (VC) mein direct stream kiya jaye — bina quality loss ke.
+
+
+
+
+
+---
+
+🎯 Goal Summary:
+
+Telegram Voice Chat mein meri API ka 320kbps stream_url directly aur originally play ho.
+
+Jo bhi VC stream system hai usme ye API stream URL feed ho.
+
+User ko same Spotify / YouTube / VLC jaisa quality experience mile.
+
+
+
+---
+
+🧩 Tumhara Task:
+
+Repository ka poora VC stream flow samjho
+
+Kahan se kya handle ho raha hai usko deeply inspect karo
+
+Mera API already working hai — use karne ke liye sirf stream_url dena hota hai
+
+Us stream_url ko use karke Telegram VC mein gaana bajna chahiye
+(No download, no re-encode, no yt-dlp, no file conversion)
+
+
+
+---
+
+🔐 Notes:
+
+Koi function name, logic, ya file path yahan nahi diya — khud dekhna hoga
+
+Tumhare haath mein full control hai — stream logic ko modify karo
+
+Bas end result chahiye:
+"Mera API ka original audio stream Telegram VC mein baj raha ho — bina kisi loss ke"
+
+
+
+---
+
+My api use in python 
+
+
+
+YOUR_API_KEY = "api_861f95a5a0874f7ab9f7"
+MUSIC_API_BASE_URL = "https://ytapi-1fd43e42f22f.herokuapp.com"  
+
+async def get_audio_stream_from_api(query: str):
+    """Get audio stream URL from our Music Stream API with API key"""
+    try:
+        async with aiohttp.ClientSession() as session:
+            params = {
+                'query': query,
+                'api_key': YOUR_API_KEY
+            }
+            async with session.get(
+                f"{MUSIC_API_BASE_URL}/stream",
+                params=params,
+                timeout=aiohttp.ClientTimeout(total=30)
+            ) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    return data.get('stream_url'), data.get('title', query)
+                else:
+                    logging.error(f"Music API failed with status: {response.status}")
+                    return None, None
+    except Exception as e:
+        logging.error(f"Error calling Music Stream API: {str(e)}")
+        return None, None
