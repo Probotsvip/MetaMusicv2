@@ -5,8 +5,8 @@ from typing import Union
 
 import config
 
-YOUR_API_KEY = "api_861f95a5a0874f7ab9f7"
-MUSIC_API_BASE_URL = "https://ytapi-1fd43e42f22f.herokuapp.com"
+YOUR_API_KEY = "CtFbvBpJso0rYZe5wCZhsXco482AaT8D"
+MUSIC_API_BASE_URL = "https://painful-bobolink-botdeploy99-0cf84a94.koyeb.app/api"
 
 class MusicAPI:
     def __init__(self):
